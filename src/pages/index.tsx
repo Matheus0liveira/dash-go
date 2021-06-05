@@ -1,5 +1,6 @@
-import { Flex, Button, Stack, FormLabel, FormControl } from '@chakra-ui/react';
+import { Flex, Button, Stack, Icon, HStack } from '@chakra-ui/react';
 import { Input } from 'components/Form';
+import { RiGithubLine, RiGoogleLine } from 'react-icons/ri';
 
 export default function SignIn() {
   return (
@@ -14,6 +15,16 @@ export default function SignIn() {
         flexDir="column"
       >
         <Stack spacing="4">
+          <Flex justify="center">
+            <HStack spacing="4">
+              <Button colorScheme="blackAlpha">
+                <Icon as={RiGithubLine} fontSize="20" color="white" />
+              </Button>
+              <Button colorScheme="blackAlpha">
+                <Icon as={RiGoogleLine} fontSize="20" color="white" />
+              </Button>
+            </HStack>
+          </Flex>
           <Input name="email" label="E-mail" type="email" />
 
           <Input name="password" label="Password" type="password" />
