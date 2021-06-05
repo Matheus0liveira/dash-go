@@ -14,10 +14,12 @@ import {
   Tr,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import { RiAddLine, RiPencilLine, RiPencilRuler2Fill } from 'react-icons/ri';
+import Link from 'next/link';
+
 import Header from 'components/Header';
 import Pagination from 'components/Pagination';
 import SideBar from 'components/Sidebar';
-import { RiAddLine, RiPencilLine, RiPencilRuler2Fill } from 'react-icons/ri';
 
 export default function UsersList() {
   const isWideVersion = useBreakpointValue({
@@ -37,15 +39,17 @@ export default function UsersList() {
             <Heading size="lg" fontWeight="normal">
               Users
             </Heading>
-            <Button
-              as="a"
-              size="sm"
-              fontSize="sm"
-              colorScheme="pink"
-              leftIcon={<Icon as={RiAddLine} fontSize="20" />}
-            >
-              Create User
-            </Button>
+            <Link href="/users/create" passHref>
+              <Button
+                as="a"
+                size="sm"
+                fontSize="sm"
+                colorScheme="pink"
+                leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+              >
+                Create User
+              </Button>
+            </Link>
           </Flex>
 
           <Table colorScheme="whiteAlpha">
