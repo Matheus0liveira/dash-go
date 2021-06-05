@@ -75,7 +75,13 @@ export default function Dashboard() {
         <SideBar />
 
         <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
-          <Box p="8" bg="gray.800" borderRadius={8} pb="4" boxShadow="base">
+          <Box
+            p={['6', '8']}
+            bg="gray.800"
+            borderRadius={8}
+            pb="4"
+            boxShadow="base"
+          >
             <Text fontSize="lg" mb="4">
               Subscribers of the week
             </Text>
@@ -88,7 +94,13 @@ export default function Dashboard() {
             />
           </Box>
 
-          <Box p="8" bg="gray.800" borderRadius={8} pb="4" boxShadow="base">
+          <Box
+            p={['6', '8']}
+            bg="gray.800"
+            borderRadius={8}
+            pb="4"
+            boxShadow="base"
+          >
             <Text fontSize="lg" mb="4">
               Opening fee
             </Text>
