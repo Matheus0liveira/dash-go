@@ -7,14 +7,19 @@ type Users = {
   email: string;
   createdAt: string;
 };
-type Data = {
+type GetUsersData = {
+  totalCount: number;
   users: Users[];
 };
 
-export async function getUsers() {
-  const { data } = await api.get<Data>('/users');
+export async function getUsers(page: number): Promise<GetUsersData> {
+  const { data, headers } = await api.get<GetUsersData>('/users', {
+    params: {
+      page,
+    },
+  });
 
-  console.log(data);
+  const totalCount = headers['x-total-count'];
 
   const users = data.users.map((user) => ({
     ...user,
@@ -25,11 +30,14 @@ export async function getUsers() {
     }),
   }));
 
-  return users;
+  return {
+    totalCount,
+    users,
+  };
 }
 
-export function useUsers() {
-  return useQuery('users', getUsers, {
+export function useUsers(page: number) {
+  return useQuery(['users', page], () => getUsers(page), {
     staleTime: 1000 * 5, // 5 seconds
   });
 }
