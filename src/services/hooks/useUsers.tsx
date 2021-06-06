@@ -14,6 +14,8 @@ type Data = {
 export async function getUsers() {
   const { data } = await api.get<Data>('/users');
 
+  console.log(data);
+
   const users = data.users.map((user) => ({
     ...user,
     createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
