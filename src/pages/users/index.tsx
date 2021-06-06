@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -25,14 +24,23 @@ import { useQuery } from 'react-query';
 import Header from 'components/Header';
 import Pagination from 'components/Pagination';
 import SideBar from 'components/Sidebar';
+import { api } from 'services/axios';
+
+type Users = {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+};
+type Data = {
+  users: Users[];
+};
 
 export default function UsersList() {
   const { isLoading, error, data, isFetching, refetch } = useQuery(
     'users',
     async () => {
-      const data = await (
-        await fetch('http://localhost:3000/api/users')
-      ).json();
+      const { data } = await api.get<Data>('/users');
 
       const users = data.users.map((user) => ({
         ...user,
