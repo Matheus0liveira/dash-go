@@ -51,9 +51,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       const { 'dashgo.token': token } = parseCookies();
 
       if (token) {
-        const { data } = await authApi.get<User>('/me');
+        const response = await authApi.get<User>('/me');
 
-        setUser(data);
+        setUser(response?.data);
       }
     })();
   }, []);
