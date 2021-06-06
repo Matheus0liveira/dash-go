@@ -19,44 +19,14 @@ import {
 } from '@chakra-ui/react';
 import { RiAddLine, RiPencilLine, RiLoader4Line } from 'react-icons/ri';
 import Link from 'next/link';
-import { useQuery } from 'react-query';
 
 import Header from 'components/Header';
 import Pagination from 'components/Pagination';
 import SideBar from 'components/Sidebar';
-import { api } from 'services/axios';
-
-type Users = {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-};
-type Data = {
-  users: Users[];
-};
+import { useUsers } from 'services/hooks/useUsers';
 
 export default function UsersList() {
-  const { isLoading, error, data, isFetching, refetch } = useQuery(
-    'users',
-    async () => {
-      const { data } = await api.get<Data>('/users');
-
-      const users = data.users.map((user) => ({
-        ...user,
-        createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        }),
-      }));
-
-      return users;
-    },
-    {
-      staleTime: 1000 * 5, // 5 seconds
-    }
-  );
+  const { isLoading, error, data, isFetching, refetch } = useUsers();
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -86,7 +56,7 @@ export default function UsersList() {
                 fontSize="sm"
                 colorScheme="purple"
                 bg="purple.700"
-                isLoading={isFetching}
+                isLoading={!isLoading && isFetching}
                 icon={<Icon as={RiLoader4Line} />}
                 onClick={() => refetch()}
               />
