@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Header from 'components/Header';
 import SideBar from 'components/Sidebar';
 import { ApexOptions } from 'apexcharts';
+import { useAuth } from 'contexts/AuthContext';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -67,6 +68,10 @@ const seriesChart = [
 ];
 
 export default function Dashboard() {
+  const { user } = useAuth();
+
+  console.log(user);
+
   return (
     <Flex direction="column" h="100vh">
       <Header />
