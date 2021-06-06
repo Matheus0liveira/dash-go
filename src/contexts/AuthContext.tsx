@@ -5,8 +5,8 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useRouter } from 'next/router';
-import { parseCookies, setCookie } from 'nookies';
+import Router from 'next/router';
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 
 import { authApi } from 'services/axios';
 
@@ -39,21 +39,30 @@ export type AuthProviderProps = {
 
 export const AuthContext = createContext({} as AuthContextData);
 
+export const signOut = () => {
+  destroyCookie(undefined, 'dashgo.token');
+  destroyCookie(undefined, 'dashgo.refreshToken');
+
+  Router.push('/');
+};
+
 export default function AuthProvider({ children }: AuthProviderProps) {
   const isAuthenticated = false;
 
   const [user, setUser] = useState<User>();
 
-  const router = useRouter();
-
   useEffect(() => {
     (async () => {
-      const { 'dashgo.token': token } = parseCookies();
+      try {
+        const { 'dashgo.token': token } = parseCookies();
 
-      if (token) {
-        const response = await authApi.get<User>('/me');
+        if (token) {
+          const response = await authApi.get<User>('/me');
 
-        setUser(response?.data);
+          setUser(response?.data);
+        }
+      } catch {
+        signOut();
       }
     })();
   }, []);
@@ -80,7 +89,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
       authApi.defaults.headers['Authorization'] = `Bearer ${token}`;
 
-      router.push('/dashboard');
+      Router.push('/dashboard');
     } catch (error) {
       alert(error.message);
     }

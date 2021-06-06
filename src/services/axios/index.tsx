@@ -1,6 +1,7 @@
-import { ThemeContext } from '@emotion/react';
-import axios, { AxiosError, AxiosResponse } from 'axios';
 import { parseCookies, setCookie } from 'nookies';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+
+import { signOut } from 'contexts/AuthContext';
 
 export type FailedRequestsQueue = {
   onSuccess: (token: string) => void;
@@ -92,8 +93,10 @@ authApi.interceptors.response.use(
           });
         }
       } else {
-        //LogOut
+        signOut();
       }
+
+      return Promise.reject(error);
     }
   }
 );
