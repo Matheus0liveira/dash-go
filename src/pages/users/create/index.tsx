@@ -10,12 +10,16 @@ import {
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from 'react-query';
+import { useRouter } from 'next/router';
 
 import { Input } from 'components/Form';
 import Header from 'components/Header';
 import Heading from 'components/Heading';
 import SideBar from 'components/Sidebar';
 import { CreateUserSchema } from 'schemas/CreateUser';
+import { queryClient } from 'services/reactQuery';
+import { api } from 'services/axios';
 
 export type CreateUserFormData = {
   fullName: string;
@@ -25,16 +29,38 @@ export type CreateUserFormData = {
 };
 
 export default function CreateUser() {
+  const router = useRouter();
+
   const { handleSubmit, formState, register } = useForm({
     resolver: yupResolver(CreateUserSchema),
   });
 
   const { errors, isSubmitting } = formState;
 
+  const createUser = useMutation(
+    async (user: CreateUserFormData): Promise<CreateUserFormData> => {
+      const { data } = await api.post<CreateUserFormData>('/users', {
+        user: {
+          ...user,
+          created_at: new Date(),
+        },
+      });
+
+      return data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('users');
+      },
+    }
+  );
+
   const handleCreateUser: SubmitHandler<CreateUserFormData> = async (
     values
   ) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await createUser.mutateAsync(values);
+
+    router.push('/users');
   };
 
   return (
@@ -70,7 +96,7 @@ export default function CreateUser() {
             </SimpleGrid>
 
             <SimpleGrid minChildWidth="240px" spacing={['6', '8']} w="100%">
-              {['Password', 'confirmPassword'].map((item) => (
+              {['password', 'confirmPassword'].map((item) => (
                 <Input
                   key={item}
                   error={errors[item]}
