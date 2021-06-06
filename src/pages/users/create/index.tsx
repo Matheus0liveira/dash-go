@@ -3,7 +3,6 @@ import {
   Button,
   Divider,
   Flex,
-  Heading,
   HStack,
   SimpleGrid,
   VStack,
@@ -14,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Input } from 'components/Form';
 import Header from 'components/Header';
+import Heading from 'components/Heading';
 import SideBar from 'components/Sidebar';
 import { CreateUserSchema } from 'schemas/CreateUser';
 
@@ -52,44 +52,34 @@ export default function CreateUser() {
           bg="gray.800"
           p={['6', '8']}
         >
-          <Heading size="lg" fontWeight="normal">
-            Create user
-          </Heading>
+          <Heading>Create user</Heading>
 
           <Divider my="6" borderColor="gray.700" />
 
           <VStack spacing="8">
             <SimpleGrid minChildWidth="240px" spacing={['6', '8']} w="100%">
-              <Input
-                error={errors.fullName}
-                name="fullName"
-                label="Full Name"
-                {...register('fullName')}
-              />
-              <Input
-                error={errors.email}
-                name="email"
-                label="E-mail"
-                type="email"
-                {...register('email')}
-              />
+              {['fullName', 'email'].map((item) => (
+                <Input
+                  key={item}
+                  error={errors[item]}
+                  name={item}
+                  label={item === 'fullName' ? 'Full Name' : 'E-mail'}
+                  {...register(item)}
+                />
+              ))}
             </SimpleGrid>
 
             <SimpleGrid minChildWidth="240px" spacing={['6', '8']} w="100%">
-              <Input
-                error={errors.password}
-                name="password"
-                label="Password"
-                type="password"
-                {...register('password')}
-              />
-              <Input
-                error={errors.confirmPassword}
-                name="confirmPassword"
-                label="Confirm Password"
-                type="password"
-                {...register('confirmPassword')}
-              />
+              {['Password', 'confirmPassword'].map((item) => (
+                <Input
+                  key={item}
+                  error={errors[item]}
+                  name={item}
+                  label={item === 'fullName' ? 'Password' : 'Confirm Password'}
+                  type="password"
+                  {...register(item)}
+                />
+              ))}
             </SimpleGrid>
           </VStack>
 
