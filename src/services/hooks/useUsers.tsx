@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query';
 import { api } from 'services/axios';
+import { queryClient } from 'services/reactQuery';
 
 type Users = {
   id: string;
@@ -36,8 +37,22 @@ export async function getUsers(page: number): Promise<GetUsersData> {
   };
 }
 
+export const getPrefetchUserById = async (userId: string) => {
+  await queryClient.prefetchQuery(
+    ['users', userId],
+    async () => {
+      const { data } = await api.get(`/users/${userId}`);
+
+      return data;
+    },
+    {
+      staleTime: 1000 * 60 * 10, // 10 minutes
+    }
+  );
+};
+
 export function useUsers(page: number) {
   return useQuery(['users', page], () => getUsers(page), {
-    staleTime: 1000 * 5, // 5 seconds
+    staleTime: 1000 * 60 * 10, // 10 minutes
   });
 }

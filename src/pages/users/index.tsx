@@ -1,4 +1,7 @@
+import { useState } from 'react';
+
 import {
+  Link,
   Box,
   Button,
   Checkbox,
@@ -18,13 +21,13 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { RiAddLine, RiPencilLine, RiLoader4Line } from 'react-icons/ri';
-import Link from 'next/link';
+import NextLink from 'next/link';
 
 import Header from 'components/Header';
 import Pagination from 'components/Pagination';
 import SideBar from 'components/Sidebar';
 import { useUsers } from 'services/hooks/useUsers';
-import { useState } from 'react';
+import { getPrefetchUserById } from 'services/hooks/useUsers';
 
 export default function UsersList() {
   const [page, setPage] = useState(1);
@@ -64,7 +67,7 @@ export default function UsersList() {
                 onClick={() => refetch()}
               />
 
-              <Link href="/users/create" passHref>
+              <NextLink href="/users/create" passHref>
                 <Button
                   as="a"
                   size="sm"
@@ -74,7 +77,7 @@ export default function UsersList() {
                 >
                   Create User
                 </Button>
-              </Link>
+              </NextLink>
             </HStack>
           </Flex>
 
@@ -107,7 +110,12 @@ export default function UsersList() {
                       </Td>
                       <Td>
                         <Box>
-                          <Text fontWeight="bold">{user.name}</Text>
+                          <Link
+                            color="purple.400"
+                            onMouseEnter={() => getPrefetchUserById(user.id)}
+                          >
+                            <Text fontWeight="bold">{user.name}</Text>
+                          </Link>
                           <Text fontSize="sm" color="gray.300">
                             {user.email}
                           </Text>
