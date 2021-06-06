@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GetServerSideProps } from 'next';
 
 import {
   Link,
@@ -6,10 +7,7 @@ import {
   Button,
   Checkbox,
   Flex,
-  Heading,
-  HStack,
   Icon,
-  IconButton,
   Spinner,
   Table,
   Tbody,
@@ -20,17 +18,16 @@ import {
   Tr,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { RiAddLine, RiPencilLine, RiLoader4Line } from 'react-icons/ri';
-import NextLink from 'next/link';
+import { RiPencilLine } from 'react-icons/ri';
 
 import Header from 'components/Header';
 import Pagination from 'components/Pagination';
 import SideBar from 'components/Sidebar';
-import { useUsers } from 'services/hooks/useUsers';
+import { getUsers, GetUsersData, useUsers } from 'services/hooks/useUsers';
 import { getPrefetchUserById } from 'services/hooks/useUsers';
 import HeaderUser from 'components/Users/Header';
 
-export default function UsersList() {
+export default function UsersList({ users }: GetUsersData) {
   const [page, setPage] = useState(1);
 
   const { isLoading, error, data, isFetching, refetch } = useUsers(page);
@@ -50,7 +47,7 @@ export default function UsersList() {
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
           <HeaderUser
             title="Create User"
-            refetch={refetch}
+            refetch={() => refetch()}
             isLoading={isLoading}
             isFetching={isFetching}
           />
@@ -131,3 +128,11 @@ export default function UsersList() {
     </Box>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  // I think miragejs doesn't work on the server
+  // const { users } = await getUsers();
+  return {
+    props: {},
+  };
+};

@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryOptions } from 'react-query';
 import { api } from 'services/axios';
 import { queryClient } from 'services/reactQuery';
 
@@ -13,7 +13,7 @@ export type GetUsersData = {
   users: Users[];
 };
 
-export async function getUsers(page: number): Promise<GetUsersData> {
+export async function getUsers(page = 1): Promise<GetUsersData> {
   const { data, headers } = await api.get<GetUsersData>('/users', {
     params: {
       page,
@@ -32,8 +32,8 @@ export async function getUsers(page: number): Promise<GetUsersData> {
   }));
 
   return {
-    totalCount,
     users,
+    totalCount,
   };
 }
 
@@ -41,7 +41,7 @@ export const getPrefetchUserById = async (userId: string) => {
   await queryClient.prefetchQuery(
     ['users', userId],
     async () => {
-      const { data } = await api.get(`/users/${userId}`);
+      const { data } = await api.get<GetUsersData>(`/users/${userId}`);
 
       return data;
     },
@@ -54,5 +54,9 @@ export const getPrefetchUserById = async (userId: string) => {
 export function useUsers(page: number) {
   return useQuery(['users', page], () => getUsers(page), {
     staleTime: 1000 * 60 * 10, // 10 minutes
+    // ...options,
   });
+
+  // console.log(teste);
+  // return teste;
 }

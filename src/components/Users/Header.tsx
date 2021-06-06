@@ -18,7 +18,7 @@ export type HeaderUserProps = {
   title: string;
   refetch?: (
     options?: RefetchOptions
-  ) => Promise<QueryObserverResult<GetUsersData, unknown>>;
+  ) => Promise<QueryObserverResult<unknown, unknown>>;
   isLoading?: boolean;
   isFetching?: boolean;
 };

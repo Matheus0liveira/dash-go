@@ -15,12 +15,12 @@ export type User = {
 
 export function makeServer() {
   const server = createServer({
-    models: {
-      user: Model.extend<Partial<User>>({}),
-    },
-
     serializers: {
       application: ActiveModelSerializer,
+    },
+
+    models: {
+      user: Model.extend<Partial<User>>({}),
     },
 
     factories: {
