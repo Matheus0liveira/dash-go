@@ -2,13 +2,13 @@ import { useQuery } from 'react-query';
 import { api } from 'services/axios';
 import { queryClient } from 'services/reactQuery';
 
-type Users = {
+export type Users = {
   id: string;
   name: string;
   email: string;
   createdAt: string;
 };
-type GetUsersData = {
+export type GetUsersData = {
   totalCount: number;
   users: Users[];
 };

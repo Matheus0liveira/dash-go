@@ -28,6 +28,7 @@ import Pagination from 'components/Pagination';
 import SideBar from 'components/Sidebar';
 import { useUsers } from 'services/hooks/useUsers';
 import { getPrefetchUserById } from 'services/hooks/useUsers';
+import HeaderUser from 'components/Users/Header';
 
 export default function UsersList() {
   const [page, setPage] = useState(1);
@@ -47,39 +48,12 @@ export default function UsersList() {
         <SideBar />
 
         <Box flex="1" borderRadius={8} bg="gray.800" p="8">
-          <Flex mb="8" justify="space-between" align="center">
-            <Heading>
-              Users
-              {!isLoading && isFetching && (
-                <Spinner size="sm" color="gray.500" ml="4" />
-              )}
-            </Heading>
-
-            <HStack spacing="4">
-              <IconButton
-                aria-label="Reload users data"
-                size="sm"
-                fontSize="sm"
-                colorScheme="purple"
-                bg="purple.700"
-                isLoading={!isLoading && isFetching}
-                icon={<Icon as={RiLoader4Line} />}
-                onClick={() => refetch()}
-              />
-
-              <NextLink href="/users/create" passHref>
-                <Button
-                  as="a"
-                  size="sm"
-                  fontSize="sm"
-                  colorScheme="pink"
-                  leftIcon={<Icon as={RiAddLine} fontSize="20" />}
-                >
-                  Create User
-                </Button>
-              </NextLink>
-            </HStack>
-          </Flex>
+          <HeaderUser
+            title="Create User"
+            refetch={refetch}
+            isLoading={isLoading}
+            isFetching={isFetching}
+          />
 
           {isLoading ? (
             <Flex justify="center">
