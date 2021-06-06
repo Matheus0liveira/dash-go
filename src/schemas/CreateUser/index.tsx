@@ -1,16 +1,16 @@
-import { ErrorsMessage } from 'schemas/Errors/messages';
+import { errorsMessage } from 'schemas/Errors/messages';
 import * as Yup from 'yup';
 
 export const CreateUserSchema = Yup.object().shape({
-  fullName: Yup.string().required(ErrorsMessage.name.isRequired),
+  fullName: Yup.string().required(errorsMessage.name.isRequired),
   email: Yup.string()
-    .email(ErrorsMessage.email.isInvalid)
-    .required(ErrorsMessage.email.isInvalid),
+    .email(errorsMessage.email.isInvalid)
+    .required(errorsMessage.email.isInvalid),
   password: Yup.string()
-    .min(6, ErrorsMessage.password.lessThanSix)
-    .required(ErrorsMessage.password.lessThanSix),
+    .min(6, errorsMessage.password.lessThanSix)
+    .required(errorsMessage.password.lessThanSix),
   confirmPassword: Yup.string()
-    .min(6, ErrorsMessage.password.lessThanSix)
-    .required(ErrorsMessage.password.lessThanSix)
-    .oneOf([Yup.ref('password'), null], ErrorsMessage.password.isNotMatch),
+    .min(6, errorsMessage.password.lessThanSix)
+    .required(errorsMessage.password.lessThanSix)
+    .oneOf([Yup.ref('password'), null], errorsMessage.password.isNotMatch),
 });

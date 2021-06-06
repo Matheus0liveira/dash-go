@@ -1,4 +1,4 @@
-export const ErrorsMessage = {
+export const errorsMessage = {
   email: {
     isRequired: 'O email é obrigatório',
     isInvalid: 'Tipo de email inválido',
