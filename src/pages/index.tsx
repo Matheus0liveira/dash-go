@@ -6,8 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/Form';
 import { SignInSchema } from 'schemas';
 import { useAuth } from 'contexts/AuthContext';
-import { GetServerSideProps } from 'next';
-import { parseCookies } from 'nookies';
 import { WithSSRGuest } from 'utils/withSSRGuest';
 
 export type SignInFormData = {

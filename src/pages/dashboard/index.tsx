@@ -7,6 +7,7 @@ import { ApexOptions } from 'apexcharts';
 import { useAuth } from 'contexts/AuthContext';
 import { WithSSRAuth } from 'utils/wuthSSRAuth';
 import { setupApiAuthClient } from 'services/axios';
+import { destroyCookie } from 'nookies';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -72,8 +73,6 @@ const seriesChart = [
 export default function Dashboard() {
   const { user } = useAuth();
 
-  console.log(user);
-
   return (
     <Flex direction="column" h="100vh">
       <Header />
@@ -129,8 +128,6 @@ export const getServerSideProps = WithSSRAuth(async (ctx) => {
   const apiClient = setupApiAuthClient(ctx);
 
   const { data } = await apiClient.get('/me');
-
-  console.log({ data });
 
   return {
     props: {},

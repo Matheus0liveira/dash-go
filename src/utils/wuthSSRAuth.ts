@@ -3,7 +3,8 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from 'next';
-import { parseCookies } from 'nookies';
+import { destroyCookie, parseCookies } from 'nookies';
+import { AuthTokenError } from 'services/Errors/AuthTokenError';
 
 export function WithSSRAuth<P>(fn: GetServerSideProps<P>): GetServerSideProps {
   return async (
@@ -20,6 +21,20 @@ export function WithSSRAuth<P>(fn: GetServerSideProps<P>): GetServerSideProps {
       };
     }
 
-    return await fn(ctx);
+    try {
+      return await fn(ctx);
+    } catch (error) {
+      if (error instanceof AuthTokenError) {
+        destroyCookie(ctx, 'dashgo.token');
+        destroyCookie(ctx, 'dashgo.refreshToken');
+
+        return {
+          redirect: {
+            destination: '/',
+            permanent: false,
+          },
+        };
+      }
+    }
   };
 }

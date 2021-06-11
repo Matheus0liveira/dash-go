@@ -57,6 +57,5 @@ export function useUsers(page: number) {
     // ...options,
   });
 
-  // console.log(teste);
   // return teste;
 }

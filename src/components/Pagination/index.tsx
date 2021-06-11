@@ -54,7 +54,6 @@ export default function Pagination({
             )}
           </>
         )}
-        {console.log(previousPage)}
         {previousPage.length &&
           previousPage.map((page) => (
             <PaginationItem
