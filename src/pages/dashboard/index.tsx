@@ -8,6 +8,7 @@ import { useAuth } from 'contexts/AuthContext';
 import { WithSSRAuth } from 'utils/wuthSSRAuth';
 import { setupApiAuthClient } from 'services/axios';
 import { destroyCookie } from 'nookies';
+import useCan from 'hooks/useCan';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -72,6 +73,12 @@ const seriesChart = [
 
 export default function Dashboard() {
   const { user } = useAuth();
+
+  const useCanSeeMetrics = useCan({
+    permissions: ['users.list', 'users.create', 'metrics.list'],
+  });
+
+  console.log(useCanSeeMetrics);
 
   return (
     <Flex direction="column" h="100vh">

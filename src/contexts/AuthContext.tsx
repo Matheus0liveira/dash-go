@@ -47,8 +47,7 @@ export const signOut = () => {
 };
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const isAuthenticated = false;
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
@@ -60,9 +59,11 @@ export default function AuthProvider({ children }: AuthProviderProps) {
           const response = await apiAuth.get<User>('/me');
 
           setUser(response?.data);
+          setIsAuthenticated(true);
         }
       } catch {
         if (process.browser) {
+          setIsAuthenticated(false);
           signOut();
         }
       }
