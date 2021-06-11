@@ -5,6 +5,7 @@ import Header from 'components/Header';
 import SideBar from 'components/Sidebar';
 import { ApexOptions } from 'apexcharts';
 import { useAuth } from 'contexts/AuthContext';
+import { WithSSRAuth } from 'utils/wuthSSRAuth';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -122,3 +123,5 @@ export default function Dashboard() {
     </Flex>
   );
 }
+
+export const getServerSideProps = WithSSRAuth(async (ctx) => ({ props: {} }));
