@@ -6,6 +6,7 @@ import SideBar from 'components/Sidebar';
 import { ApexOptions } from 'apexcharts';
 import { useAuth } from 'contexts/AuthContext';
 import { WithSSRAuth } from 'utils/wuthSSRAuth';
+import { setupApiAuthClient } from 'services/axios';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -124,4 +125,14 @@ export default function Dashboard() {
   );
 }
 
-export const getServerSideProps = WithSSRAuth(async (ctx) => ({ props: {} }));
+export const getServerSideProps = WithSSRAuth(async (ctx) => {
+  const apiClient = setupApiAuthClient(ctx);
+
+  const { data } = await apiClient.get('/me');
+
+  console.log({ data });
+
+  return {
+    props: {},
+  };
+});

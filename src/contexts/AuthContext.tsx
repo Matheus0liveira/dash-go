@@ -8,7 +8,7 @@ import {
 import Router from 'next/router';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
 
-import { authApi } from 'services/axios';
+import { apiAuth } from 'services/axios/apiAuthClient';
 
 export type User = {
   email: string;
@@ -57,19 +57,21 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         const { 'dashgo.token': token } = parseCookies();
 
         if (token) {
-          const response = await authApi.get<User>('/me');
+          const response = await apiAuth.get<User>('/me');
 
           setUser(response?.data);
         }
       } catch {
-        signOut();
+        if (process.browser) {
+          signOut();
+        }
       }
     })();
   }, []);
 
   const signIn = async ({ email, password }: SignInCredentials) => {
     try {
-      const { data } = await authApi.post<PostAuthSession>('/sessions', {
+      const { data } = await apiAuth.post<PostAuthSession>('/sessions', {
         email,
         password,
       });
@@ -87,7 +89,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
       setUser({ email, ...user });
 
-      authApi.defaults.headers['Authorization'] = `Bearer ${token}`;
+      apiAuth.defaults.headers['Authorization'] = `Bearer ${token}`;
 
       Router.push('/dashboard');
     } catch (error) {
