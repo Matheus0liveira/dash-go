@@ -26,6 +26,7 @@ import SideBar from 'components/Sidebar';
 import { getUsers, GetUsersData, useUsers } from 'services/hooks/useUsers';
 import { getPrefetchUserById } from 'services/hooks/useUsers';
 import HeaderUser from 'components/Users/Header';
+import { WithSSRAuth } from 'utils/wuthSSRAuth';
 
 export default function UsersList({ users }: GetUsersData) {
   const [page, setPage] = useState(1);
@@ -129,10 +130,16 @@ export default function UsersList({ users }: GetUsersData) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  // I think miragejs doesn't work on the server
-  // const { users } = await getUsers();
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps = WithSSRAuth(
+  async () => {
+    // I think miragejs doesn't work on the server
+    // const { users } = await getUsers();
+    return {
+      props: {},
+    };
+  },
+  {
+    permissions: ['metrics.list'],
+    roles: ['administrator'],
+  }
+);
